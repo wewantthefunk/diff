@@ -3,7 +3,7 @@ public class CompareLine {
     private int _line2num;
     private String _line1;
     private String _line2;
-
+    
     private static String NULL_VALUE_INDICATOR = "null";
 
     public CompareLine(int x, int y, String line1, String line2) {
@@ -30,18 +30,24 @@ public class CompareLine {
     }
 
     private String pad(String s, int padLength) {
+    	return pad(s, padLength, " ", true);
+    }
+    
+    private String pad(String s, int padLength, String padChar, boolean padRight) {
         String result = s;
         for(int x = s.length(); x < padLength; x++) {
-            result += " ";
+        	if (padRight)
+        		result += padChar;
+        	else
+        		result = padChar + result;
         }
 
         return result;
     }
 
-    public String toString(int padLength) {
+    public String toString(int padLength, int length) {
         if (getLine1().equals(getLine2())) {
-        //if (getLine1Num() == getLine2Num()) {
-            return getLine2Num() + ": " + pad(getLine1(), padLength) + "  ==   " + getLine2();
+            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(getLine1(), padLength) + "  ==   " + pad(Integer.toString(getLine2Num()), length, "0", false) + ": " + getLine2();
         }
 
         String l1 = getLine1();
@@ -53,9 +59,9 @@ public class CompareLine {
             if (l2.equals(NULL_VALUE_INDICATOR)) {
                 l2 = "";
             }
-            return getLine2Num() + ": " + pad(l1, padLength) + " <del>  " + l2;
+            return pad(Integer.toString(getLine2Num()), length, "0", false) + ": " + pad(l1, padLength) + " <del> " + l2;
         }
 
-        return getLine1Num() + ": " + pad(l1, padLength) + " <add>  ";
+        return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <add>";
     }
 }

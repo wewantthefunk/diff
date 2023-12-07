@@ -25,56 +25,42 @@ public class LCS {
 
         for (int x = 0; x < file1Lines.size(); x++) {
             boolean found = false;
+            String l1 = file1Lines.get(x).trim();
             for (int y = lastKnownY; y < file2Lines.size(); y++) {
-                if (file1Lines.get(x).equals(file2Lines.get(y))) {
-                    compareLines.add(new CompareLine(x + 1, y + 1, file1Lines.get(x), file2Lines.get(y)));
-                    if (file1Lines.get(x).length() > longest) 
-                        longest = file1Lines.get(x).length();
+            	String l2 = file2Lines.get(y).trim();
+                if (l1.equals(l2)) {
+                    compareLines.add(new CompareLine(x + 1, y + 1, l1, l2));
+                    if (file1Lines.get(x).trim().length() > longest) 
+                        longest = file1Lines.get(x).trim().length();
                     found = true;
                     lastKnownY = y;
+                    if (l1.equals(""))
+                    	lastKnownY++;
                     break;
                 }
             }
-
+            
             if (!found) {
-                compareLines.add(new CompareLine(x + 1, 0, file1Lines.get(x), "null"));
-                if (file1Lines.get(x).length() > longest) 
-                        longest = file1Lines.get(x).length();
+            	//lastKnownY++;
             }
         }
-
-        int lookingForLine = 1;
-        lastKnownY = 0;
-        
-        for (int x = 0; x < file2Lines.size(); x++) {
-            boolean found = false;
-            for (int y = 0; y < compareLines.size(); y++) {
-                int l2n = compareLines.get(y).getLine2Num();
-                if (l2n > lookingForLine) {
-                    found = true;
-                    int diff = l2n - lookingForLine;
-                    for (int z = 0; z < diff; z++) {
-                        compareLines.add(z, new CompareLine(0, (x - z) + 1, "null", file2Lines.get(x - z)));
-                        lookingForLine++;
-                    }
-                    break;
-                } else if (l2n == lookingForLine) {
-                    found = true;
-                    lookingForLine++;
-                    break;
-                }
-            }
-
-            if (!found) {
-                compareLines.add(new CompareLine(0, x + 1, "null", file2Lines.get(x)));
-                lookingForLine++;
-            }
-        }
-
-        lookingForLine++;
 
         for (int x = 0; x < compareLines.size(); x++) {
-            System.out.println(compareLines.get(x).toString(longest));
+            System.out.println(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
         }
+    }
+    
+    private static int countDigits(int number) {
+    	if (number == 0)
+    		return 1;
+    	
+    	int count = 0;
+    	
+    	while (number != 0) {
+    		number /= 10;
+    		count++;
+    	}
+    	
+    	return count;
     }
 }
