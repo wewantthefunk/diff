@@ -4,11 +4,13 @@ public class CompareLine {
     private String _line1;
     private String _line2;
 
+    private static String NULL_VALUE_INDICATOR = "null";
+
     public CompareLine(int x, int y, String line1, String line2) {
         _line1num = x;
         _line2num = y;
-        _line1 = line1;
-        _line2 = line2;
+        _line1 = line1.trim();
+        _line2 = line2.trim();
     }
 
     public int getLine1Num() {
@@ -43,12 +45,12 @@ public class CompareLine {
         }
 
         String l1 = getLine1();
-        if (l1.equals("null"))
+        if (l1.equals(NULL_VALUE_INDICATOR))
             l1 = "";
 
-        if (getLine1().equals("null")) {
+        if (getLine1().equals(NULL_VALUE_INDICATOR)) {
             String l2 = getLine2();
-            if (l2.equals("null")) {
+            if (l2.equals(NULL_VALUE_INDICATOR)) {
                 l2 = "";
             }
             return getLine2Num() + ": " + pad(l1, padLength) + " <del>  " + l2;
