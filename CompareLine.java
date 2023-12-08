@@ -29,6 +29,24 @@ public class CompareLine {
         return _line2;
     }
 
+    public void setNotNullLine(String value) {
+        if (value == null)
+            value = NULL_VALUE_INDICATOR;
+        if (getLine1().equals(NULL_VALUE_INDICATOR)) {
+            _line1 = value.trim();
+        } else {
+            _line2 = value.trim();      
+        }
+    }
+
+    public String getNotNullLine() {
+        if (getLine1().equals(NULL_VALUE_INDICATOR)) {
+            return getLine2();
+        }
+
+        return getLine1();
+    }
+
     private String pad(String s, int padLength) {
     	return pad(s, padLength, " ", true);
     }
@@ -54,14 +72,16 @@ public class CompareLine {
         if (l1.equals(NULL_VALUE_INDICATOR))
             l1 = "";
 
+        String l2 = getLine2();
+        if (l2.equals(NULL_VALUE_INDICATOR)) {
+            l2 = "";
+        }
+
         if (getLine1().equals(NULL_VALUE_INDICATOR)) {
-            String l2 = getLine2();
-            if (l2.equals(NULL_VALUE_INDICATOR)) {
-                l2 = "";
-            }
+            
             return pad(Integer.toString(getLine2Num()), length, "0", false) + ": " + pad(l1, padLength) + " <del> " + l2;
         }
 
-        return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <add>";
+        return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <add> " + l2;
     }
 }

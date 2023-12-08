@@ -16,35 +16,62 @@ public class LCS {
         IFileReader fileReader = factory.createFileReader();
 
         // Read files
-        List<String> file1Lines = fileReader.readFile(args[0]);
-        List<String> file2Lines = fileReader.readFile(args[1]);
+        List<String> revised = fileReader.readFile(args[0]);
+        List<String> original = fileReader.readFile(args[1]);
+
+        List<String> shortest = revised;
+
+        int maxLength = original.size();
+
+        if (original.size() < revised.size()) {
+            shortest = original;
+            maxLength = revised.size();
+        }
 
         List<CompareLine> compareLines = new ArrayList<>();
 
-        int lastKnownY = 0;
+        int lastMatchShortest = -1;
 
-        for (int x = 0; x < file1Lines.size(); x++) {
-            boolean found = false;
-            String l1 = file1Lines.get(x).trim();
-            for (int y = lastKnownY; y < file2Lines.size(); y++) {
-            	String l2 = file2Lines.get(y).trim();
-                if (l1.equals(l2)) {
-                    compareLines.add(new CompareLine(x + 1, y + 1, l1, l2));
-                    if (file1Lines.get(x).trim().length() > longest) 
-                        longest = file1Lines.get(x).trim().length();
-                    found = true;
-                    lastKnownY = y;
-                    if (l1.equals(""))
-                    	lastKnownY++;
-                    break;
+        for (int i = 0; i < maxLength; i++) {
+            String originalLine = i < original.size() ? original.get(i).trim() : null;
+            String revisedLine = i < revised.size() ? revised.get(i).trim() : null;
+
+            if (revisedLine != null)
+                if (revisedLine.length() > longest)
+                    longest = revisedLine.length();
+
+            if (originalLine == null) {
+                // revised line
+                compareLines.add(new CompareLine(i + 1, i + 1, revisedLine, "null"));
+                //compareLines.add("Added: " + revisedLine);
+            } else if (revisedLine == null) {
+                // original line
+                compareLines.add(new CompareLine(i + 1, i + 1, "null", originalLine));
+                //compareLines.add("Deleted: " + originalLine);
+            } else if (!originalLine.equals(revisedLine)) {
+                String ol = "null";
+                if (lastMatchShortest == -1) {
+                    lastMatchShortest = i;
+                    ol = originalLine;
                 }
-            }
-            
-            if (!found) {
-            	//lastKnownY++;
+                compareLines.add(new CompareLine(i + 1, i + 1, revisedLine, ol));
+                //compareLines.add("Modified: " + "From [" + originalLine + "] to [" + revisedLine + "]");
+            } else {
+                compareLines.add(new CompareLine(i + 1, i + 1, revisedLine, originalLine));
             }
         }
 
+        int compareCount = compareLines.size() - 1;
+        for (int i = shortest.size() - 1; i > lastMatchShortest; i--) {
+            if (shortest.get(i).trim().equals(compareLines.get(compareCount).getNotNullLine())) {
+                compareLines.get(compareCount).setNotNullLine(shortest.get(i));
+                compareCount--;
+            };
+
+            compareCount--;
+        }
+
+        // print out results
         for (int x = 0; x < compareLines.size(); x++) {
             System.out.println(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
         }
