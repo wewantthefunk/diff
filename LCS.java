@@ -5,7 +5,7 @@ public class LCS {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.out.println("Usage: LCS <file1> <file2>");
+            System.out.println("Usage: LCS <revised> <original>");
             return;
         }
 
@@ -19,56 +19,66 @@ public class LCS {
         List<String> revised = fileReader.readFile(args[0]);
         List<String> original = fileReader.readFile(args[1]);
 
-        List<String> shortest = revised;
+        List<String> shortestList = revised;
+        List<String> longestList = original;
 
         int maxLength = original.size();
 
+        boolean originalShortest = true;
+
         if (original.size() < revised.size()) {
-            shortest = original;
+            shortestList = original;
+            longestList = revised;
             maxLength = revised.size();
+            originalShortest = false;
         }
 
         List<CompareLine> compareLines = new ArrayList<>();
 
-        int lastMatchShortest = -1;
+        for (int x = 0; x < maxLength; x++) {
+            String l1 = "null";
+            String l2 = "null";
 
-        for (int i = 0; i < maxLength; i++) {
-            String originalLine = i < original.size() ? original.get(i).trim() : null;
-            String revisedLine = i < revised.size() ? revised.get(i).trim() : null;
-
-            if (revisedLine != null)
-                if (revisedLine.length() > longest)
-                    longest = revisedLine.length();
-
-            if (originalLine == null) {
-                // revised line
-                compareLines.add(new CompareLine(i + 1, i + 1, revisedLine, "null"));
-                //compareLines.add("Added: " + revisedLine);
-            } else if (revisedLine == null) {
-                // original line
-                compareLines.add(new CompareLine(i + 1, i + 1, "null", originalLine));
-                //compareLines.add("Deleted: " + originalLine);
-            } else if (!originalLine.equals(revisedLine)) {
-                String ol = "null";
-                if (lastMatchShortest == -1) {
-                    lastMatchShortest = i;
-                    ol = originalLine;
-                }
-                compareLines.add(new CompareLine(i + 1, i + 1, revisedLine, ol));
-                //compareLines.add("Modified: " + "From [" + originalLine + "] to [" + revisedLine + "]");
+            if (originalShortest) {
+                l2 = Utilities.rtrim(longestList.get(x));
             } else {
-                compareLines.add(new CompareLine(i + 1, i + 1, revisedLine, originalLine));
+                l1 = Utilities.rtrim(longestList.get(x));
             }
+
+            if (longest < l1.length())
+                longest = l1.length();
+
+            compareLines.add(new CompareLine(x + 1, x + 1, l1, l2));
         }
 
-        int compareCount = compareLines.size() - 1;
-        for (int i = shortest.size() - 1; i > lastMatchShortest; i--) {
-            if (shortest.get(i).trim().equals(compareLines.get(compareCount).getNotNullLine())) {
-                compareLines.get(compareCount).setNotNullLine(shortest.get(i));
-                compareCount--;
-            };
+        int longestIndex = maxLength - 1;
+        boolean found = false;
+        for (int x = shortestList.size() - 1; x > -1; x--) {
+            found = false;
+            for (int y = longestIndex; y > -1; y--) {
+                if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {
+                    longestIndex = y;
+                    found = true;
+                    compareLines.get(y).setLine1(longestList.get(y));
+                    compareLines.get(y).setLine2(shortestList.get(x));
+                    if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
+                        longest = Utilities.rtrim(longestList.get(longestIndex)).length();
+                    break;
+                }
+            }
 
-            compareCount--;
+            if (!found) {
+                if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
+                    longest = Utilities.rtrim(longestList.get(longestIndex)).length();
+                if (originalShortest) {
+                    compareLines.get(longestIndex).setLine2(longestList.get(longestIndex));
+                    compareLines.get(longestIndex).setLine1(shortestList.get(x));
+                } else {
+                    compareLines.get(longestIndex).setLine1(longestList.get(longestIndex));
+                    compareLines.get(longestIndex).setLine2(shortestList.get(x));
+                }
+                longestIndex--;
+            }
         }
 
         // print out results

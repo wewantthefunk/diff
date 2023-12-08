@@ -9,8 +9,8 @@ public class CompareLine {
     public CompareLine(int x, int y, String line1, String line2) {
         _line1num = x;
         _line2num = y;
-        _line1 = line1.trim();
-        _line2 = line2.trim();
+        _line1 = Utilities.rtrim(line1);
+        _line2 = Utilities.rtrim(line2);
     }
 
     public int getLine1Num() {
@@ -25,8 +25,16 @@ public class CompareLine {
         return _line1;
     }
 
+    public void setLine1(String value) {
+        _line1 = Utilities.rtrim(value);
+    }
+
     public String getLine2() {
         return _line2;
+    }
+
+    public void setLine2(String value) {
+        _line2 = Utilities.rtrim(value);
     }
 
     public void setNotNullLine(String value) {
@@ -65,7 +73,7 @@ public class CompareLine {
 
     public String toString(int padLength, int length) {
         if (getLine1().equals(getLine2())) {
-            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(getLine1(), padLength) + "  ==   " + pad(Integer.toString(getLine2Num()), length, "0", false) + ": " + getLine2();
+            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(getLine1(), padLength) + "  ==   " + getLine2();
         }
 
         String l1 = getLine1();
@@ -77,11 +85,14 @@ public class CompareLine {
             l2 = "";
         }
 
-        if (getLine1().equals(NULL_VALUE_INDICATOR)) {
-            
-            return pad(Integer.toString(getLine2Num()), length, "0", false) + ": " + pad(l1, padLength) + " <del> " + l2;
+        if (getLine1().equals(NULL_VALUE_INDICATOR)) {            
+            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <del> " + l2;
         }
 
-        return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <add> " + l2;
+        if (getLine2().equals(NULL_VALUE_INDICATOR)) {
+            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <add> " + l2;
+        }
+
+        return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <upd> " + l2;
     }
 }
