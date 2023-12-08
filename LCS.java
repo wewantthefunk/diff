@@ -57,18 +57,19 @@ public class LCS {
             compareLines.add(new CompareLine(x + 1, x + 1, l1, l2));
         }
 
-        int longestIndex = maxLength - 1;
+        int longestIndex = 0;
         boolean found = false;
-        for (int x = shortestList.size() - 1; x > -1; x--) {
+        for (int x = 0; x < shortestList.size(); x++) {
             found = false;
-            for (int y = longestIndex; y > -1; y--) {
+            for (int y = longestIndex; y < maxLength; y++) {
                 if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {
-                    longestIndex = y;
+                    
                     found = true;
                     compareLines.get(y).setLine1(longestList.get(y));
                     compareLines.get(y).setLine2(shortestList.get(x));
                     if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
                         longest = Utilities.rtrim(longestList.get(longestIndex)).length();
+                    longestIndex = y + 1;
                     break;
                 }
             }
@@ -83,7 +84,7 @@ public class LCS {
                     compareLines.get(longestIndex).setLine1(longestList.get(longestIndex));
                     compareLines.get(longestIndex).setLine2(shortestList.get(x));
                 }
-                longestIndex--;
+                longestIndex++;
             }
         }
 
