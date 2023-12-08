@@ -1,13 +1,19 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LCS {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.out.println("Usage: LCS <revised> <original>");
+        if (args.length < 2) {
+            System.out.println("Usage: LCS <revised> <original> [options]");
+            System.out.println("   Options:");
+            System.out.println("    -help, --h - help information");
+            System.out.println("    -supress, --s - suppress lines that match");
             return;
         }
+
+        List<String> arguments = Arrays.asList(args);
 
         int longest = 0;
 
@@ -16,8 +22,8 @@ public class LCS {
         IFileReader fileReader = factory.createFileReader();
 
         // Read files
-        List<String> revised = fileReader.readFile(args[0]);
-        List<String> original = fileReader.readFile(args[1]);
+        List<String> revised = fileReader.readFile(arguments.get(0));
+        List<String> original = fileReader.readFile(arguments.get(1));
 
         List<String> shortestList = revised;
         List<String> longestList = original;
@@ -82,10 +88,19 @@ public class LCS {
         }
 
         compareLines = Utilities.cleanup(compareLines);
-
+        
         // print out results
+        boolean showLine = true;
         for (int x = 0; x < compareLines.size(); x++) {
-            System.out.println(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
+            if (arguments.contains("--s") || arguments.contains("-supress")) {
+                showLine = false;
+                if (compareLines.get(x).getChangeSet() > 0) {
+                    showLine = true;
+                }
+            }
+
+            if (showLine)
+                System.out.println(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
         }
     }
     
