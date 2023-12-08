@@ -81,6 +81,8 @@ public class LCS {
             }
         }
 
+        compareLines = Utilities.cleanup(compareLines);
+
         // print out results
         for (int x = 0; x < compareLines.size(); x++) {
             System.out.println(compareLines.get(x).toString(longest, countDigits(compareLines.size())));

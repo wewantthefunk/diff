@@ -3,6 +3,7 @@ public class CompareLine {
     private int _line2num;
     private String _line1;
     private String _line2;
+    private int _changeset;
     
     private static String NULL_VALUE_INDICATOR = "null";
 
@@ -11,6 +12,7 @@ public class CompareLine {
         _line2num = y;
         _line1 = Utilities.rtrim(line1);
         _line2 = Utilities.rtrim(line2);
+        _changeset = 0;
     }
 
     public int getLine1Num() {
@@ -37,22 +39,42 @@ public class CompareLine {
         _line2 = Utilities.rtrim(value);
     }
 
-    public void setNotNullLine(String value) {
-        if (value == null)
-            value = NULL_VALUE_INDICATOR;
-        if (getLine1().equals(NULL_VALUE_INDICATOR)) {
-            _line1 = value.trim();
-        } else {
-            _line2 = value.trim();      
-        }
+    public int getChangeSet() {
+        return _changeset;
     }
 
-    public String getNotNullLine() {
-        if (getLine1().equals(NULL_VALUE_INDICATOR)) {
-            return getLine2();
+    public void setChangeSet(int value) {
+        _changeset = value;
+    }
+
+    public String getChangeType() {
+        String l1 = getLine1();
+        if (l1.equals(NULL_VALUE_INDICATOR))
+            l1 = "";
+
+        String l2 = getLine2();
+        if (l2.equals(NULL_VALUE_INDICATOR)) {
+            l2 = "";
         }
 
-        return getLine1();
+        return getChangeType(l1, l2);
+    }
+
+    public String getChangeType(String l1, String l2) {
+
+        if (l1.equals(l2)) {
+            return Utilities.LINE_EQUALS;
+        }
+
+        if (getLine1().equals(NULL_VALUE_INDICATOR)) {            
+            return " |del| ";
+        }
+
+        if (getLine2().equals(NULL_VALUE_INDICATOR)) {
+            return " |add| ";
+        }
+
+        return " |upd| ";
     }
 
     private String pad(String s, int padLength) {
@@ -72,10 +94,6 @@ public class CompareLine {
     }
 
     public String toString(int padLength, int length) {
-        if (getLine1().equals(getLine2())) {
-            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(getLine1(), padLength) + "  ==   " + getLine2();
-        }
-
         String l1 = getLine1();
         if (l1.equals(NULL_VALUE_INDICATOR))
             l1 = "";
@@ -85,14 +103,8 @@ public class CompareLine {
             l2 = "";
         }
 
-        if (getLine1().equals(NULL_VALUE_INDICATOR)) {            
-            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <del> " + l2;
-        }
+        String changeSet = getChangeSet() > 0 ? pad(Integer.toString(getChangeSet()), 5, "0", false) : "     ";
 
-        if (getLine2().equals(NULL_VALUE_INDICATOR)) {
-            return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <add> " + l2;
-        }
-
-        return pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + " <upd> " + l2;
+        return changeSet + " " +  pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + getChangeType(l1, l2) + l2;
     }
 }
