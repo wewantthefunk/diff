@@ -17,10 +17,18 @@ public class Utilities {
     public static List<CompareLine> cleanup(List<CompareLine> list) {
         int changeCount = 1;
         boolean isChanging = false;
+        String lastChangeType = LINE_EQUALS;
         for (CompareLine compareLine : list) {
-            if (!compareLine.getChangeType().equals(Utilities.LINE_EQUALS)) {
+            if (!compareLine.getChangeType().equals(lastChangeType) && !compareLine.getChangeType().equals(LINE_EQUALS)) {
+                changeCount++;
                 compareLine.setChangeSet(changeCount);
                 isChanging = true;
+                lastChangeType = compareLine.getChangeType();
+            }
+            else if (!compareLine.getChangeType().equals(LINE_EQUALS)) {
+                compareLine.setChangeSet(changeCount);
+                isChanging = true;
+                lastChangeType = compareLine.getChangeType();
             } else if (isChanging) {
                 isChanging = false;
                 changeCount++;
