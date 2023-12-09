@@ -6,6 +6,14 @@ public class Utilities {
     public static String LINE_DEL    = " |del| ";
     public static String LINE_UPD    = " |upd| ";
 
+    public static String NULL_VALUE_INDICATOR = "null";
+
+    public static String SUPPRESS_LINE_FLAG         = "--s";
+    public static String SUPPRESS_LINE_VERBOSE_FLAG = "-supress";
+
+    public static String MERGE_LINE_FLAG         = "--m";
+    public static String MERGE_LINE_VERBOSE_FLAG = "-merge";
+
     public static String rtrim(String s) {
         if (s.trim().equals(""))
             return s;

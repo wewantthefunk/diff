@@ -14,7 +14,8 @@ public class LCS {
             view.DisplayLn("Usage: LCS <revised> <original> [options]");
             view.DisplayLn("   Options:");
             view.DisplayLn("    -help, --h - help information");
-            view.DisplayLn("    -supress, --s - suppress lines that match");
+            view.DisplayLn("    " + Utilities.SUPPRESS_LINE_VERBOSE_FLAG + ", " + Utilities.SUPPRESS_LINE_FLAG + " - suppress lines that match");
+            view.DisplayLn("    " + Utilities.MERGE_LINE_VERBOSE_FLAG + ", " + Utilities.MERGE_LINE_FLAG + " - merge the files after diff");
             return;
         }
 
@@ -43,8 +44,8 @@ public class LCS {
         List<CompareLine> compareLines = new ArrayList<>();
 
         for (int x = 0; x < maxLength; x++) {
-            String l1 = "null";
-            String l2 = "null";
+            String l1 = Utilities.NULL_VALUE_INDICATOR;
+            String l2 = Utilities.NULL_VALUE_INDICATOR;
 
             if (originalShortest) {
                 l2 = Utilities.rtrim(longestList.get(x));
@@ -76,21 +77,14 @@ public class LCS {
             }
 
             if (!found) {
-                //longestIndex++;
                 if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
                     longest = Utilities.rtrim(longestList.get(longestIndex)).length();
                 if (originalShortest) {
                     String l1 = shortestList.get(x);
-                    if (l1.equals("")) {
-                        l1 = "blank";
-                    }
                     compareLines.get(longestIndex).setLine2(longestList.get(longestIndex));
                     compareLines.get(longestIndex).setLine1(l1);
                 } else {
                     String l1 = longestList.get(longestIndex);
-                    if (l1.equals("")) {
-                        l1 = "blank";
-                    }
                     compareLines.get(longestIndex).setLine1(l1);
                     compareLines.get(longestIndex).setLine2(shortestList.get(x));
                 }
@@ -103,7 +97,7 @@ public class LCS {
         // print out results
         boolean showLine = true;
         for (int x = 0; x < compareLines.size(); x++) {
-            if (arguments.contains("--s") || arguments.contains("-supress")) {
+            if (arguments.contains(Utilities.SUPPRESS_LINE_FLAG) || arguments.contains(Utilities.SUPPRESS_LINE_VERBOSE_FLAG)) {
                 showLine = false;
                 if (compareLines.get(x).getChangeSet() > 0) {
                     showLine = true;
@@ -114,7 +108,7 @@ public class LCS {
                 view.DisplayLn(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
         }
 
-        if (arguments.contains("--m") || arguments.contains("-merge")) {
+        if (arguments.contains(Utilities.MERGE_LINE_FLAG) || arguments.contains(Utilities.MERGE_LINE_VERBOSE_FLAG)) {
             Merge merge = new Merge(view, compareLines, factory);
             merge.DoMerge();
         }

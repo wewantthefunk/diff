@@ -4,8 +4,6 @@ public class CompareLine {
     private String _line1;
     private String _line2;
     private int _changeset;
-    
-    private static String NULL_VALUE_INDICATOR = "null";
 
     public CompareLine(int x, int y, String line1, String line2) {
         _line1num = x;
@@ -48,33 +46,23 @@ public class CompareLine {
     }
 
     public String getChangeType() {
-        String l1 = getLine1();
-        /*if (l1.equals(NULL_VALUE_INDICATOR))
-            l1 = "";*/
-
-        String l2 = getLine2();
-        /*if (l2.equals(NULL_VALUE_INDICATOR)) {
-            l2 = "";
-        }*/
-
-        return getChangeType(l1, l2);
+        return getChangeType(getLine1(), getLine2());
     }
 
     public String getChangeType(String l1, String l2) {
-
         if (l1.equals(l2)) {
             return Utilities.LINE_EQUALS;
         }
 
-        if (getLine1().equals(NULL_VALUE_INDICATOR)) {            
-            return " |del| ";
+        if (getLine1().equals(Utilities.NULL_VALUE_INDICATOR)) {            
+            return Utilities.LINE_UPD;
         }
 
-        if (getLine2().equals(NULL_VALUE_INDICATOR)) {
-            return " |add| ";
+        if (getLine2().equals(Utilities.NULL_VALUE_INDICATOR)) {
+            return Utilities.LINE_ADD;
         }
 
-        return " |upd| ";
+        return Utilities.LINE_UPD;
     }
 
     private String pad(String s, int padLength) {
@@ -98,14 +86,16 @@ public class CompareLine {
         String l2 = getLine2();
 
         String ct = getChangeType(l1, l2);
-        if (l1.equals(NULL_VALUE_INDICATOR))
+
+        // get the lines ready for output
+        if (l1.equals(Utilities.NULL_VALUE_INDICATOR))
             l1 = "";
 
-        if (l2.equals(NULL_VALUE_INDICATOR)) {
+        if (l2.equals(Utilities.NULL_VALUE_INDICATOR)) {
             l2 = "";
         }
 
-        String changeSet = getChangeSet() > 0 ? pad(Integer.toString(getChangeSet()), 5, "0", false) : "     ";
+        String changeSet = getChangeSet() > 0 ? pad(Integer.toString(getChangeSet()), 5, "0", false) : pad("", 5);
 
         return changeSet + " " +  pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + ct + l2;
     }
