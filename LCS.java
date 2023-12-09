@@ -20,6 +20,7 @@ public class LCS {
         Factory factory = new Factory();
 
         IFileReader fileReader = factory.createFileReader();
+        IView view = factory.createDisplayView();
 
         // Read files
         List<String> revised = fileReader.readFile(arguments.get(0));
@@ -101,7 +102,7 @@ public class LCS {
             }
 
             if (showLine)
-                System.out.println(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
+                view.Display(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
         }
     }
     
