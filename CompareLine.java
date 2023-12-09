@@ -49,13 +49,13 @@ public class CompareLine {
 
     public String getChangeType() {
         String l1 = getLine1();
-        if (l1.equals(NULL_VALUE_INDICATOR))
-            l1 = "";
+        /*if (l1.equals(NULL_VALUE_INDICATOR))
+            l1 = "";*/
 
         String l2 = getLine2();
-        if (l2.equals(NULL_VALUE_INDICATOR)) {
+        /*if (l2.equals(NULL_VALUE_INDICATOR)) {
             l2 = "";
-        }
+        }*/
 
         return getChangeType(l1, l2);
     }
@@ -95,16 +95,18 @@ public class CompareLine {
 
     public String toString(int padLength, int length) {
         String l1 = getLine1();
+        String l2 = getLine2();
+
+        String ct = getChangeType(l1, l2);
         if (l1.equals(NULL_VALUE_INDICATOR))
             l1 = "";
 
-        String l2 = getLine2();
         if (l2.equals(NULL_VALUE_INDICATOR)) {
             l2 = "";
         }
 
         String changeSet = getChangeSet() > 0 ? pad(Integer.toString(getChangeSet()), 5, "0", false) : "     ";
 
-        return changeSet + " " +  pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + getChangeType(l1, l2) + l2;
+        return changeSet + " " +  pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + ct + l2;
     }
 }

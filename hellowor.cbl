@@ -12,7 +12,9 @@
            DISPLAY 'HI'.
 
            DISPLAY 'inserted line above'.
+
            DISPLAY 'HELLO, sir'.
+           
            DISPLAY 'this is a new line'.
 
            DISPLAY 'GOODBYE'.

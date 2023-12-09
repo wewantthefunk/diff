@@ -65,7 +65,8 @@ public class LCS {
             for (int y = longestIndex; y < maxLength; y++) {
                 if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {                    
                     found = true;
-                    compareLines.get(y).setLine1(longestList.get(y));
+                    String l1 = longestList.get(y);
+                    compareLines.get(y).setLine1(l1);
                     compareLines.get(y).setLine2(shortestList.get(x));
                     if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
                         longest = Utilities.rtrim(longestList.get(longestIndex)).length();
@@ -75,13 +76,22 @@ public class LCS {
             }
 
             if (!found) {
+                //longestIndex++;
                 if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
                     longest = Utilities.rtrim(longestList.get(longestIndex)).length();
                 if (originalShortest) {
+                    String l1 = shortestList.get(x);
+                    if (l1.equals("")) {
+                        l1 = "blank";
+                    }
                     compareLines.get(longestIndex).setLine2(longestList.get(longestIndex));
-                    compareLines.get(longestIndex).setLine1(shortestList.get(x));
+                    compareLines.get(longestIndex).setLine1(l1);
                 } else {
-                    compareLines.get(longestIndex).setLine1(longestList.get(longestIndex));
+                    String l1 = longestList.get(longestIndex);
+                    if (l1.equals("")) {
+                        l1 = "blank";
+                    }
+                    compareLines.get(longestIndex).setLine1(l1);
                     compareLines.get(longestIndex).setLine2(shortestList.get(x));
                 }
                 longestIndex++;

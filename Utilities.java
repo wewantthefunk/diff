@@ -20,7 +20,6 @@ public class Utilities {
         String lastChangeType = LINE_EQUALS;
         for (CompareLine compareLine : list) {
             if (!compareLine.getChangeType().equals(lastChangeType) && !compareLine.getChangeType().equals(LINE_EQUALS)) {
-                changeCount++;
                 compareLine.setChangeSet(changeCount);
                 isChanging = true;
                 lastChangeType = compareLine.getChangeType();
