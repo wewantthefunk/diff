@@ -5,22 +5,22 @@ import java.util.List;
 public class LCS {
 
     public static void main(String[] args) throws Exception {
+         Factory factory = new Factory();
+
+        IFileReader fileReader = factory.createFileReader();
+        IView view = factory.createDisplayView();
+
         if (args.length < 2) {
-            System.out.println("Usage: LCS <revised> <original> [options]");
-            System.out.println("   Options:");
-            System.out.println("    -help, --h - help information");
-            System.out.println("    -supress, --s - suppress lines that match");
+            view.DisplayLn("Usage: LCS <revised> <original> [options]");
+            view.DisplayLn("   Options:");
+            view.DisplayLn("    -help, --h - help information");
+            view.DisplayLn("    -supress, --s - suppress lines that match");
             return;
         }
 
         List<String> arguments = Arrays.asList(args);
 
         int longest = 0;
-
-        Factory factory = new Factory();
-
-        IFileReader fileReader = factory.createFileReader();
-        IView view = factory.createDisplayView();
 
         // Read files
         List<String> revised = fileReader.readFile(arguments.get(0));
@@ -63,8 +63,7 @@ public class LCS {
         for (int x = 0; x < shortestList.size(); x++) {
             found = false;
             for (int y = longestIndex; y < maxLength; y++) {
-                if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {
-                    
+                if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {                    
                     found = true;
                     compareLines.get(y).setLine1(longestList.get(y));
                     compareLines.get(y).setLine2(shortestList.get(x));
@@ -102,7 +101,12 @@ public class LCS {
             }
 
             if (showLine)
-                view.Display(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
+                view.DisplayLn(compareLines.get(x).toString(longest, countDigits(compareLines.size())));
+        }
+
+        if (arguments.contains("--m") || arguments.contains("-merge")) {
+            Merge merge = new Merge(view, compareLines, factory);
+            merge.DoMerge();
         }
     }
     

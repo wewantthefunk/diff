@@ -3,3 +3,4 @@ main/
 work/
 .vscode/
 *.class
+*.out
