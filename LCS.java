@@ -32,13 +32,13 @@ public class LCS {
 
         int maxLength = original.size();
 
-        boolean originalShortest = true;
+        boolean originalShortest = false;
 
         if (original.size() < revised.size()) {
             shortestList = original;
             longestList = revised;
             maxLength = revised.size();
-            originalShortest = false;
+            originalShortest = true;
         }
 
         List<CompareLine> compareLines = new ArrayList<>();
@@ -48,9 +48,9 @@ public class LCS {
             String l2 = Utilities.NULL_VALUE_INDICATOR;
 
             if (originalShortest) {
-                l2 = Utilities.rtrim(longestList.get(x));
-            } else {
                 l1 = Utilities.rtrim(longestList.get(x));
+            } else {
+                l2 = Utilities.rtrim(longestList.get(x));
             }
 
             if (longest < l1.length())
@@ -62,6 +62,9 @@ public class LCS {
         int longestIndex = 0;
         boolean found = false;
         for (int x = 0; x < shortestList.size(); x++) {
+            if (x == 13) {
+                int i = 0;
+            }
             found = false;
             for (int y = longestIndex; y < maxLength; y++) {
                 if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {                    
@@ -79,7 +82,7 @@ public class LCS {
             if (!found) {
                 if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
                     longest = Utilities.rtrim(longestList.get(longestIndex)).length();
-                if (originalShortest) {
+                if (!originalShortest) {
                     String l1 = shortestList.get(x);
                     compareLines.get(longestIndex).setLine2(longestList.get(longestIndex));
                     compareLines.get(longestIndex).setLine1(l1);
@@ -96,6 +99,7 @@ public class LCS {
         
         // print out results
         boolean showLine = true;
+        view.DisplayLn(Utilities.pad("", 7) + Utilities.pad("", countDigits(compareLines.size()) + 1) + arguments.get(0) + Utilities.pad("", longest - arguments.get(0).length()) + "       " + arguments.get(1));
         for (int x = 0; x < compareLines.size(); x++) {
             if (arguments.contains(Utilities.SUPPRESS_LINE_FLAG) || arguments.contains(Utilities.SUPPRESS_LINE_VERBOSE_FLAG)) {
                 showLine = false;

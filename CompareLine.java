@@ -55,7 +55,7 @@ public class CompareLine {
         }
 
         if (getLine1().equals(Utilities.NULL_VALUE_INDICATOR)) {            
-            return Utilities.LINE_UPD;
+            return Utilities.LINE_DEL;
         }
 
         if (getLine2().equals(Utilities.NULL_VALUE_INDICATOR)) {

@@ -9,11 +9,7 @@ public class JavaFileView implements IView {
         _filename = filename;
 
         File myObj = new File(_filename); 
-        if (myObj.delete()) { 
-        System.out.println("Deleted the file: " + myObj.getName());
-        } else {
-        System.out.println("Failed to delete the file.");
-        } 
+        myObj.delete();
     }
 
     public void DisplayLn(String msg) {

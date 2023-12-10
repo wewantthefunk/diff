@@ -44,4 +44,20 @@ public class Utilities {
 
         return list;
     }
+
+    public static String pad(String s, int padLength) {
+    	return pad(s, padLength, " ", true);
+    }
+    
+    private static String pad(String s, int padLength, String padChar, boolean padRight) {
+        String result = s;
+        for(int x = s.length(); x < padLength; x++) {
+        	if (padRight)
+        		result += padChar;
+        	else
+        		result = padChar + result;
+        }
+
+        return result;
+    }
 }
