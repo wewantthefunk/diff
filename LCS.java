@@ -62,9 +62,6 @@ public class LCS {
         int longestIndex = 0;
         boolean found = false;
         for (int x = 0; x < shortestList.size(); x++) {
-            if (x == 13) {
-                int i = 0;
-            }
             found = false;
             for (int y = longestIndex; y < maxLength; y++) {
                 if (Utilities.rtrim(longestList.get(y)).equals(Utilities.rtrim(shortestList.get(x)))) {                    
