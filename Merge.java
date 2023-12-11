@@ -7,11 +7,13 @@ public class Merge {
     private IView _view;
     private List<CompareLine> _compareLines;
     private Factory _factory;
+    private String _outfile;
 
-    public Merge(IView view, List<CompareLine> compareLines, Factory factory) {
+    public Merge(IView view, List<CompareLine> compareLines, Factory factory, String outFile) {
         _view = view;
         _compareLines = compareLines;
         _factory = factory;
+        _outfile = outFile;
     }
 
     public void DoMerge() {
@@ -26,7 +28,7 @@ public class Merge {
     }
 
     private void MergeFiles(String include) {
-        IView outFile = _factory.createFileView("temp.out");
+        IView outFile = _factory.createFileView(_outfile);
 
         List<Integer> includedSets = cleanupList(Arrays.asList(include.split(",")));
 
@@ -44,7 +46,7 @@ public class Merge {
 
         IFileReader fileReader = _factory.createFileReader();
 
-        List<String> merged = fileReader.readFile("temp.out");
+        List<String> merged = fileReader.readFile(_outfile);
 
         _view.DisplayLn("");
         _view.DisplayLn("Merge file results: ");
