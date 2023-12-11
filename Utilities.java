@@ -49,7 +49,7 @@ public class Utilities {
     	return pad(s, padLength, " ", true);
     }
     
-    private static String pad(String s, int padLength, String padChar, boolean padRight) {
+    public static String pad(String s, int padLength, String padChar, boolean padRight) {
         String result = s;
         for(int x = s.length(); x < padLength; x++) {
         	if (padRight)

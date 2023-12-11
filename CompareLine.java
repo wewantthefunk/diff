@@ -65,22 +65,6 @@ public class CompareLine {
         return Utilities.LINE_UPD;
     }
 
-    private String pad(String s, int padLength) {
-    	return pad(s, padLength, " ", true);
-    }
-    
-    private String pad(String s, int padLength, String padChar, boolean padRight) {
-        String result = s;
-        for(int x = s.length(); x < padLength; x++) {
-        	if (padRight)
-        		result += padChar;
-        	else
-        		result = padChar + result;
-        }
-
-        return result;
-    }
-
     public String toString(int padLength, int length) {
         String l1 = getLine1();
         String l2 = getLine2();
@@ -95,8 +79,8 @@ public class CompareLine {
             l2 = "";
         }
 
-        String changeSet = getChangeSet() > 0 ? pad(Integer.toString(getChangeSet()), 5, "0", false) : pad("", 5);
+        String changeSet = getChangeSet() > 0 ? Utilities.pad(Integer.toString(getChangeSet()), 5, "0", false) : Utilities.pad("", 5);
 
-        return changeSet + " " +  pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + pad(l1, padLength) + ct + l2;
+        return changeSet + " " +  Utilities.pad(Integer.toString(getLine1Num()), length, "0", false) + ": " + Utilities.pad(l1, padLength) + ct + l2;
     }
 }
