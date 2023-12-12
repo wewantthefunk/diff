@@ -18,6 +18,20 @@ public class Diff {
 
         List<String> arguments = Arrays.asList(args);
 
+        String mergeOutFile = "temp.out";
+
+        if (arguments.contains(Utilities.MERGE_OUT_LINE_FLAG) || arguments.contains(Utilities.MERGE_OUT_LINE_VERBOSE_FLAG)) {
+        	int index = arguments.indexOf(Utilities.MERGE_OUT_LINE_FLAG);
+
+            if (index < 0) {
+                index = arguments.indexOf(Utilities.MERGE_OUT_LINE_VERBOSE_FLAG);
+            }
+
+            if (index > 1) {
+                mergeOutFile = arguments.get(index + 1);
+            }
+        }
+
         int longest = 0;
 
         // Read files
@@ -107,7 +121,7 @@ public class Diff {
         }
 
         if (arguments.contains(Utilities.MERGE_LINE_FLAG) || arguments.contains(Utilities.MERGE_LINE_VERBOSE_FLAG)) {
-            Merge merge = new Merge(view, compareLines, factory);
+            Merge merge = new Merge(view, compareLines, factory, mergeOutFile);
             merge.DoMerge();
         }
     }

@@ -14,6 +14,9 @@ public class Utilities {
     public static String MERGE_LINE_FLAG         = "--m";
     public static String MERGE_LINE_VERBOSE_FLAG = "-merge";
 
+    public static String MERGE_OUT_LINE_FLAG         = "--mo";
+    public static String MERGE_OUT_LINE_VERBOSE_FLAG = "-mergeout";
+
     public static String rtrim(String s) {
         if (s.trim().equals(""))
             return "";
