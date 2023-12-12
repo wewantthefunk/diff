@@ -1,4 +1,4 @@
-public class Factory {
+public class Factory implements IFactory {
     public IFileReader createFileReader() {
         return new JavaFileReader();
     }

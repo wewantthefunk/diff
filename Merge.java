@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class Merge {
     private IView _view;
     private List<CompareLine> _compareLines;
-    private Factory _factory;
+    private IFactory _factory;
 
-    public Merge(IView view, List<CompareLine> compareLines, Factory factory) {
+    public Merge(IView view, List<CompareLine> compareLines, IFactory factory) {
         _view = view;
         _compareLines = compareLines;
         _factory = factory;
