@@ -88,18 +88,22 @@ public class Diff {
             }
 
             if (!found) {
-                if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
-                    longest = Utilities.rtrim(longestList.get(longestIndex)).length();
-                if (!originalShortest) {
-                    String l1 = shortestList.get(x);
-                    compareLines.get(longestIndex).setLine2(longestList.get(longestIndex));
-                    compareLines.get(longestIndex).setLine1(l1);
+                if (longestIndex < longestList.size()) {
+                    if (longest < Utilities.rtrim(longestList.get(longestIndex)).length())
+                        longest = Utilities.rtrim(longestList.get(longestIndex)).length();
+                    if (!originalShortest) {
+                        String l1 = shortestList.get(x);
+                        compareLines.get(longestIndex).setLine2(longestList.get(longestIndex));
+                        compareLines.get(longestIndex).setLine1(l1);
+                    } else {
+                        String l1 = longestList.get(longestIndex);
+                        compareLines.get(longestIndex).setLine1(l1);
+                        compareLines.get(longestIndex).setLine2(shortestList.get(x));
+                    }
+                    longestIndex++;
                 } else {
-                    String l1 = longestList.get(longestIndex);
-                    compareLines.get(longestIndex).setLine1(l1);
-                    compareLines.get(longestIndex).setLine2(shortestList.get(x));
+                    compareLines.add(new CompareLine(0, x + 1, Utilities.NULL_VALUE_INDICATOR, shortestList.get(x)));
                 }
-                longestIndex++;
             }
         }
 
