@@ -9,11 +9,8 @@
 
            DISPLAY 'HELLO, WORLD!'.
 
-           DISPLAY 'HI'.
-
-           DISPLAY 'HELLO'.
+           DISPLAY 'HELLO 1'.
 
            DISPLAY 'GOODBYE'.
 
            GOBACK.
-      * remove this line
