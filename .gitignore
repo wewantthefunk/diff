@@ -4,3 +4,4 @@ work/
 .vscode/
 *.class
 *.out
+jcompare.bat
